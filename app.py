@@ -34,31 +34,58 @@ def get_db_connection():
     return conn
 
 
-# Initialize database
-with get_db_connection() as conn:
-    cursor = conn.cursor()
-    cursor.execute("CREATE TABLE IF NOT EXISTS tone(colour TEXT PRIMARY KEY, number INT)")
-    cursor.execute("INSERT OR IGNORE INTO tone VALUES ('cool', 0)")
-    cursor.execute("INSERT OR IGNORE INTO tone VALUES ('warm', 0)")
+def get_db_connection():
+    conn = sqlite3.connect('project.db', check_same_thread=False)
+    conn.row_factory = sqlite3.Row
+    return conn
 
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS dress(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        dtype TEXT,
-        colour TEXT,
-        undertones TEXT,
-        weather TEXT,
-        occasion1 TEXT,
-        imagepath TEXT,
-        wearcount INT DEFAULT 0
-    )
-    """)
-    # Add wearcount column if missing
+
+# Initialize database
+try:
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("CREATE TABLE IF NOT EXISTS tone(colour TEXT PRIMARY KEY, number INT)")
+        cursor.execute("INSERT OR IGNORE INTO tone VALUES ('cool', 0)")
+        cursor.execute("INSERT OR IGNORE INTO tone VALUES ('warm', 0)")
+
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS dress(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            dtype TEXT,
+            colour TEXT,
+            undertones TEXT,
+            weather TEXT,
+            occasion1 TEXT,
+            imagepath TEXT,
+            wearcount INT DEFAULT 0
+        )
+        """)
+        # Add wearcount column if missing
+        try:
+            cursor.execute("ALTER TABLE dress ADD COLUMN wearcount INT DEFAULT 0")
+        except sqlite3.OperationalError:
+            pass
+        conn.commit()
+except Exception as e:
+    print(f"Database initialization error: {e}")
+    import traceback
+    traceback.print_exc()
+
+
+# Health check endpoint
+@app.route("/health", methods=["GET"])
+def health():
     try:
-        cursor.execute("ALTER TABLE dress ADD COLUMN wearcount INT DEFAULT 0")
-    except sqlite3.OperationalError:
-        pass
-    conn.commit()
+        with get_db_connection() as conn:
+            conn.execute("SELECT 1")
+        return jsonify({"status": "healthy", "database": "connected"}), 200
+    except Exception as e:
+        return jsonify({"status": "unhealthy", "error": str(e)}), 500
+
+
+@app.route("/", methods=["GET"])
+def home():
+    return jsonify({"message": "Wardo API is running"}), 200
 
 
 # ---------------- IMPROVED COLOR DETECTION ----------------
@@ -422,3 +449,6 @@ def wear():
 # ---------------- RUN ----------------
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000, threaded=True)
+
+# Export app for Vercel
+application = app
