@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: wardo
+    env: python
+    plan: free
+    pythonVersion: 3.12
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12
+      - key: PYTHONUNBUFFERED
+        value: true

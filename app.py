@@ -14,8 +14,8 @@ from flask import send_from_directory
 
 app = Flask(__name__)
 
-# Use /tmp for database on Vercel (ephemeral filesystem)
-db_path = os.environ.get('DB_PATH', '/tmp/project.db' if '/vercel' in os.getcwd() else 'project.db')
+# Use /tmp for database on serverless platforms (ephemeral filesystem)
+db_path = os.environ.get('DB_PATH', '/tmp/project.db' if any(x in os.getcwd() for x in ['/vercel', '/render']) else 'project.db')
 app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -33,7 +33,7 @@ def allowed_file(filename):
 
 
 def get_db_connection():
-    db_path = os.environ.get('DB_PATH', '/tmp/project.db' if '/vercel' in os.getcwd() else 'project.db')
+    db_path = os.environ.get('DB_PATH', '/tmp/project.db' if any(x in os.getcwd() for x in ['/vercel', '/render']) else 'project.db')
     conn = sqlite3.connect(db_path, check_same_thread=False)
     conn.row_factory = sqlite3.Row
     return conn
@@ -447,7 +447,8 @@ def wear():
 
 # ---------------- RUN ----------------
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=5000, threaded=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=False, host='0.0.0.0', port=port, threaded=True)
 
-# Export app for Vercel
+# Export app for WSGI servers (Gunicorn, etc.)
 application = app
