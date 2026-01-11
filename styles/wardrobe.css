@@ -1,0 +1,116 @@
+* {
+  box-sizing: border-box;
+  font-family: system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #0f1915;
+  color: #fff;
+  overflow: hidden;
+}
+
+.page {
+  padding: 40px;
+  height: 100vh;
+}
+
+.slide-in {
+  animation: slideIn 0.8s ease forwards;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0 }
+  to { transform: translateX(0); opacity: 1 }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header p {
+  opacity: 0.6;
+}
+
+.controls {
+  margin-top: 25px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+input {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: none;
+  width: 240px;
+}
+
+.tabs button {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: none;
+  background: #eee;
+  cursor: pointer;
+}
+
+.tabs button.active {
+  background: #c6b07c;
+}
+
+.add {
+  background: #c6b07c;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.items {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: #1a2722;
+  padding: 15px;
+  border-radius: 14px;
+  position: relative;
+}
+
+.card span {
+  opacity: 0.6;
+  font-size: 13px;
+}
+
+.card button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.empty {
+  margin-top: 120px;
+  text-align: center;
+  opacity: 0.6;
+}
+
+.empty button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+}
+
+.card img {
+  height: 90px;
+}
+

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wardo</title>
+<link rel="stylesheet" href="styles/index.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+/* -------------------- Your Original Styles -------------------- */
+.instrument-sans {
+  font-family: "Instrument Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
+@font-face {
+  font-family: kings_ransom;
+  src: url("/styles/resources/fonts/Kingv2l.ttf");
+}
+.wardrobe,
+.contact,
+.login,
+.stylist{
+    font-family: "Instrument Sans", sans-serif;
+    font-size: 19px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #ABABAB;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+.wardrobe:hover,
+.contact:hover,
+.login:hover,
+.stylist:hover,
+.get-started:hover {
+    transform: scale(1.1);
+    color: #ffdd57;
+}
+.wardrobe:active,
+.contact:active,
+.login:active,
+.stylist:active,
+.get-started:active {
+    transform: scale(1.1);
+    color: #eec931;
+    opacity:0.5;
+}
+.get-started{
+    font-family: "Instrument Sans", sans-serif;
+    font-size: 19px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    padding: 9px 15px;
+    color: #ABABAB;
+    background: #2c2c2c;
+    border: none;
+    border-radius: 11px;
+    cursor: pointer;
+}
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  font-family: "Instrument Sans", sans-serif;
+  background: url("styles/resources/bg-image-home.png") center / cover no-repeat;
+  scroll-behavior: smooth; /* enable smooth scroll globally */
+}
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+.bg > div {
+  width: 100vw !important;
+  height: 100vh !important;
+}
+.liquid-glass{
+  width: 90%;
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 16px 24px;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(22px);
+  border-radius: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+.logo{
+    font-family: kings_ransom;
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+}
+.header{
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 12px;
+    justify-content: flex-end;
+    align-items: center;
+}
+@media (max-width: 768px) {
+  .header {
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .liquid-glass {
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+  }
+}
+@media (max-width: 480px) {
+  .stylist, .wardrobe, .contact, .login, .get-started {
+    font-size: 16px;
+  }
+}
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+/* -------------------- Card Stack Styles -------------------- */
+.scene {
+  perspective: 1400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.card-stack {
+  position: relative;
+  width: 640px;
+  height: 340px;
+}
+.card {
+  position: absolute;
+  width: 150px;
+  height: 220px;
+  background: #e6e6e6;
+  border-radius: 14px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  box-shadow: 0 20px 35px rgba(0,0,0,0.4);
+  transition: transform 1.6s cubic-bezier(.22,.9,.35,1);
+}
+.card:nth-child(1) { transition-delay: 0s; }
+.card:nth-child(2) { transition-delay: 0.18s; }
+.card:nth-child(3) { transition-delay: 0.36s; }
+.card:nth-child(4) { transition-delay: 0.54s; }
+.card:nth-child(5) { transition-delay: 0.72s; }
+.card:nth-child(6) { transition-delay: 0.90s; }
+.card-stack.fanned .card:nth-child(1) { transform: translate(-50%, -50%) translateX(-210px) rotate(-15deg); }
+.card-stack.fanned .card:nth-child(2) { transform: translate(-50%, -50%) translateX(-125px) rotate(-8deg); }
+.card-stack.fanned .card:nth-child(3) { transform: translate(-50%, -50%) translateX(-35px) rotate(-2deg); }
+.card-stack.fanned .card:nth-child(4) { transform: translate(-50%, -50%) translateX(35px) rotate(2deg); }
+.card-stack.fanned .card:nth-child(5) { transform: translate(-50%, -50%) translateX(125px) rotate(8deg); }
+.card-stack.fanned .card:nth-child(6) { transform: translate(-50%, -50%) translateX(210px) rotate(15deg); }
+
+/* -------------------- Contact & About Section -------------------- */
+#contactAbout {
+  background: #111;
+  color: #fff;
+  padding: 100px 20px;
+  text-align: center;
+}
+#contactAbout h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+#contactAbout p {
+  font-size: 18px;
+  margin: 10px 0;
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg">
+    <div data-us-project="jbNt73STrE3qktWMIJal"></div>
+</div>
+
+<div class="liquid-glass">
+    <div class="logo">WARDO</div>
+    <div class="header">
+        <a href="signup.html"><button class="stylist">Stylist</button></a>
+        <a href="signup.html"><button class="wardrobe">Wardrobe</button></a>
+        <button class="contact">Contact Us</button>
+        <a href="signin.html"><button class="login">Login</button></a>
+        <a href="signup.html"><button class="get-started">Get Started</button></a>
+    </div>
+</div>
+
+<div class="scene">
+    <div class="card-stack" id="stack">
+        <div class="card"><img src="styles/resources/IMG_4253.PNG" alt="Card 1"></div>
+        <div class="card"><img src="styles/resources/IMG_4252.PNG" alt="Card 2"></div>
+        <div class="card"><img src="styles/resources/IMG_4249.PNG" alt="Card 3"></div>
+        <div class="card"><img src="styles/resources/IMG_4248.PNG" alt="Card 4"></div>
+        <div class="card"><img src="styles/resources/IMG_4251.PNG" alt="Card 5"></div>
+        <div class="card"><img src="styles/resources/image-14488c38-d046-4326-86b7-0e7d60a1ce41.png" alt="Card 6"></div>
+    </div>
+</div>
+
+<!-- Contact & About Section -->
+<div id="contactAbout">
+    <h2>Contact & About Us</h2>
+    <p><strong>About Us:</strong> Wardo helps you manage your wardrobe and style effortlessly.</p>
+    <p><strong>Contact Us:</strong> Email: support@wardo.com | Phone: +91 1111111111</p>
+</div>
+
+<script>
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    document.getElementById("stack").classList.add("fanned");
+  }, 1300);
+});
+
+// Smooth scroll to Contact/About
+document.querySelector('.contact').addEventListener('click', () => {
+  document.getElementById('contactAbout').scrollIntoView({ behavior: 'smooth' });
+});
+</script>
+
+</body>
+</html>

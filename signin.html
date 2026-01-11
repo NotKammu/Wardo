@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wardo&#45;Create Account</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+Great+Primer+SC&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/signin.css" />
+</head>
+<body>
+  <div class="liquid-glass">
+    <div class="signup-yellow">
+      <p>WELCOME BACK</p>
+    </div>
+    <div class="signup-white">
+      <p>Sign in to access your wardrobe</p>
+    </div>
+    <div class="field">
+      <label>Email</label>
+      <input type="email" value="user@example.com" readonly />
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" value="12345678" readonly />
+    </div>
+    <button class="signup-btn" type="button" onclick="handleSignin()">Sign In</button>
+    <p class="signup-text">
+      Don't have an account?
+      <a href="signup.html">Sign up</a>
+    </p>
+  </div>
+  <a href="index.html" class="back-home">← Back to Home</a>
+  <script>
+    function handleSignin() {
+      // Replace current page so back button won't return here
+      window.location.replace("dashboard.html");
+    }
+  </script>
+</body>
+</html>
