@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Wardo</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/profile.css">
+</head>
+<body>
+
+<a href="dashboard.html">
+  <button class="action go-back">← Go Back Home</button>
+</a>
+
+<div class="page">
+  <div class="actions">
+
+    <!-- Profile Image -->
+    <div class="liquid-glass">
+      <div class="profile-pic-wrapper">
+        <img src="styles/resources/3d_avatar_13.png" class="profile-pic" alt="Profile">
+        <button class="edit-pic-btn" onclick="openEdit()">✎</button>
+      </div>
+
+      <button class="action logout" onclick="openModal('logout')">Logout</button>
+      <button class="action delete" onclick="openModal('delete')">Delete Account</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== Confirm Modal ===== -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <h3 id="confirmTitle"></h3>
+    <p id="confirmMessage"></p>
+
+    <div class="confirm-actions">
+      <button class="confirm-btn no" onclick="closeModal()">No</button>
+      <button class="confirm-btn yes" id="confirmYes">Yes</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Profile Edit Modal ===== -->
+<div class="edit-overlay" id="editOverlay" onclick="closeEdit(event)">
+  <div class="edit-modal">
+
+    <h3>Update Profile Image</h3>
+    <p>Upload a new profile image or remove the current one.</p>
+
+    <div class="edit-preview">
+      <div class="edit-avatar"><img src="resources/3d_avatar_13.png"></div>
+    </div>
+
+    <label class="edit-label">Profile Picture</label>
+    <input type="file" class="edit-file">
+
+    <div class="edit-actions">
+      <button class="edit-cancel" onclick="closeEdit()">Cancel</button>
+      <button class="edit-save">Save</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  /* ===== Logout / Delete Modal ===== */
+  function openModal(type) {
+    const overlay = document.getElementById("confirmOverlay");
+    const title = document.getElementById("confirmTitle");
+    const message = document.getElementById("confirmMessage");
+    const yesBtn = document.getElementById("confirmYes");
+
+    overlay.style.display = "flex";
+
+    if (type === "logout") {
+      title.textContent = "Confirm Logout";
+      message.textContent = "Do you really want to logout?";
+      yesBtn.className = "confirm-btn yes logout-yes";
+      yesBtn.onclick = () => alert("Logged out");
+      yesBtn.onclick = () => window.location.replace("index.html");
+
+    }
+
+    if (type === "delete") {
+      title.textContent = "Delete Account";
+      message.textContent =
+        "⚠️ This action is permanent. You will lose all your data, history, and saved details. This cannot be undone.";
+      yesBtn.className = "confirm-btn yes delete-yes";
+      yesBtn.onclick = () => alert("Account deleted"), window.location.replace("index.html");
+    }
+  }
+
+  function closeModal() {
+    document.getElementById("confirmOverlay").style.display = "none";
+  }
+
+  /* ===== Edit Profile Modal ===== */
+  function openEdit() {
+    document.getElementById("editOverlay").style.display = "flex";
+  }
+
+  function closeEdit(e) {
+    if (!e || e.target.id === "editOverlay") {
+      document.getElementById("editOverlay").style.display = "none";
+    }
+  }
+</script>
+
+</body>
+</html>

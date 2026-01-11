@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Wardo</title>
+<style>
+  body {
+    margin:0;font-family:Arial,sans-serif;background:#0f1b17;color:white;padding:24px;
+  }
+  .header{
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .add{
+    padding:10px 18px;border-radius:8px;background:#1fa971;border:none;font-weight:bold;cursor:pointer;
+  }
+  .controls{
+    margin:20px 0;
+  }
+  #search{
+    width:100%;padding:10px;border-radius:8px;border:none;margin-bottom:10px;
+  }
+  .tabs button{background:none;border:none;color:white;margin-right:12px;opacity:0.6;cursor:pointer;}
+  .tabs .active{opacity:1;border-bottom:2px solid #1fa971;}
+  .items{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;}
+  .card{background:#1a2722;border-radius:14px;padding:10px;position:relative;}
+  .card img{width:100%;height:150px;object-fit:cover;border-radius:10px;}
+  .card button{position:absolute;top:8px;right:8px;background:none;border:none;color:white;font-size:16px;cursor:pointer;}
+  .card small{display:block;margin-top:4px;opacity:0.8;font-size:12px;}
+  .empty{display:none;text-align:center;margin-top:60px;}
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,0.7);display:none;align-items:center;justify-content:center;z-index:100;}
+  .modal.active{display:flex;}
+  .modal-box{background:#13201b;padding:20px;border-radius:14px;width:360px;}
+  input, select{width:100%;padding:8px;margin-bottom:12px;border-radius:6px;border:none;background:#1a2722;color:white;}
+  button.add{width:auto;padding:10px 18px;background:#1fa971;cursor:pointer;margin-bottom:12px;}
+  .weather-section{margin-bottom:12px;}
+  .weather-section p{margin:0 0 6px 0;font-weight:bold;font-size:14px;}
+  .weather-checkbox{appearance:none;-webkit-appearance:none;background-color:#1a2722;border:2px solid #1fa971;width:18px;height:18px;margin-right:6px;border-radius:4px;cursor:pointer;position:relative;vertical-align:middle;}
+  .weather-checkbox:checked::after{content:'';position:absolute;left:4px;top:0;width:6px;height:12px;border:solid #1fa971;border-width:0 2px 2px 0;transform:rotate(45deg);}
+  .weather-label{margin-right:12px;cursor:pointer;font-size:13px;}
+  .preview{display:none;margin-bottom:10px;}
+  .preview img{width:100%;border-radius:8px;}
+  .heart{position:absolute;bottom:8px;right:8px;font-size:18px;color:#888;cursor:pointer;user-select:none;}
+  .heart.fav{color:red;}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="header">
+    <div>
+      <h1>My Wardrobe</h1>
+      <p id="count">0 Items in your wardrobe</p>
+    </div>
+    <button class="add" onclick="openModal()">Add Item</button>
+  </div>
+
+  <div class="controls">
+    <input id="search" placeholder="Search your wardrobe" oninput="render()" />
+    <div class="tabs">
+      <button class="active" onclick="setFilter('All', this)">All</button>
+      <button onclick="setFilter('Tops', this)">Tops</button>
+      <button onclick="setFilter('Bottoms', this)">Bottoms</button>
+      <button onclick="setFilter('Outwear', this)">Outwear</button>
+      <button onclick="setFilter('Shoes', this)">Shoes</button>
+      <button onclick="setFilter('More', this)">More</button>
+    </div>
+  </div>
+
+  <div id="items" class="items"></div>
+  <div id="empty" class="empty">
+    <p>No Items in your Wardrobe</p>
+    <button class="add" onclick="openModal()">Add your First Item</button>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <h3>Add Clothing Item</h3>
+    <input type="file" id="imageInput" accept="image/*">
+    <div class="preview" id="preview"><img id="previewImg"></div>
+    <button class="add" id="detectBtn">Upload & Detect Color</button>
+    <input id="nameInput" placeholder="Item name">
+    <select id="typeInput">
+      <option>Ethnic Wear</option>
+      <option>Kurta</option>
+      <option>Palazzo</option>
+      <option>Jeans</option>
+      <option>T-Shirt</option>
+      <option>Shorts</option>
+      <option>Skirt</option>
+      <option>Blazer</option>
+      <option>Jacket</option>
+      <option>Coat</option>
+      <option>Formal Trousers</option>
+      <option>Blouse</option>
+      <option>Sweater</option>
+      <option>Cardigan</option>
+    </select>
+    <select id="colorInput"><option>Detecting color...</option></select>
+
+    <div class="weather-section">
+      <p>Your Preferred Weather (select manually)</p>
+      <label class="weather-label"><input type="checkbox" class="weather-checkbox" value="Monsoon"> Monsoon</label>
+      <label class="weather-label"><input type="checkbox" class="weather-checkbox" value="Summer"> Summer</label>
+      <label class="weather-label"><input type="checkbox" class="weather-checkbox" value="Winter"> Winter</label>
+    </div>
+
+    <button class="add" onclick="saveItem()">Save</button>
+    <button onclick="closeModal()">Cancel</button>
+  </div>
+</div>
+
+<script>
+const API_BASE = ':5000'; // backend port
+
+let items = JSON.parse(localStorage.getItem('wardrobe') || '[]');
+let filter = 'All';
+let imageFile = null;
+
+const modal = document.getElementById('modal');
+const imageInput = document.getElementById('imageInput');
+const preview = document.getElementById('preview');
+const previewImg = document.getElementById('previewImg');
+const colorInput = document.getElementById('colorInput');
+const nameInput = document.getElementById('nameInput');
+const typeInput = document.getElementById('typeInput');
+
+function openModal(){ modal.classList.add('active'); }
+function closeModal(){ modal.classList.remove('active'); }
+function setFilter(type, btn){ 
+  filter = type; 
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active')); 
+  btn.classList.add('active'); 
+  render(); 
+}
+
+function weatherCheckboxes(){ return document.querySelectorAll('.weather-checkbox'); }
+
+// Image preview
+imageInput.onchange = () => {
+  const file = imageInput.files[0];
+  if(!file) return;
+  imageFile = file;
+  previewImg.src = URL.createObjectURL(file);
+  preview.style.display = 'flex';
+};
+
+// -------------------- UPLOAD & DETECT COLOR ONLY --------------------
+document.getElementById('detectBtn').onclick = async function(){
+  if(!imageFile){ alert('Select an image first'); return; }
+
+  const formData = new FormData();
+  formData.append('image', imageFile);
+
+  try {
+    const res = await fetch(`${API_BASE}/wardrobe/uploadAndDetect`, { method:'POST', body: formData });
+    if(!res.ok){
+      const txt = await res.text();
+      throw new Error(`Server error: ${res.status} ${txt}`);
+    }
+    const data = await res.json();
+    const detectedColor = data.detected_color || '';
+
+    // Populate color dropdown
+    const colors = ['Black','White','Red','Green','Yellow','Blue','Orange','Gray','Purple'];
+    colorInput.innerHTML = '';
+    colors.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c;
+      opt.textContent = c;
+      if(c.toLowerCase() === detectedColor.toLowerCase()) opt.selected = true;
+      colorInput.appendChild(opt);
+    });
+
+    // ⚡ Manual weather only: do NOT check any checkboxes
+    weatherCheckboxes().forEach(chk => chk.checked = false);
+
+    alert('Color detection complete! Select the preferred weather manually and save the item.');
+  } catch(err){
+    alert('Detection failed. Select color and weather manually.\n'+err);
+    colorInput.innerHTML='<option value="">Select color</option>';
+    weatherCheckboxes().forEach(chk => chk.checked=false);
+  }
+};
+
+// -------------------- SAVE ITEM --------------------
+async function saveItem(){
+  if(!imageFile){ alert('Select image first'); return; }
+  const name = nameInput.value.trim();
+  if(!name){ alert('Enter item name'); return; }
+
+  const dtype = typeInput.value;
+  const color = colorInput.value;
+  const weather = [...weatherCheckboxes()].filter(c=>c.checked).map(c=>c.value);
+
+  const formData = new FormData();
+  formData.append('image', imageFile);
+  formData.append('dtype', dtype);
+  formData.append('weather', weather.join(','));
+  formData.append('undertone', 'Neutral');
+
+  try {
+    const res = await fetch(`${API_BASE}/add_dress`, {method:'POST', body: formData});
+    const data = await res.json();
+    if(res.ok){
+      alert('Item saved successfully!');
+      items.push({id:Date.now(), name, type: dtype, color, weather, image: URL.createObjectURL(imageFile), fav:false});
+      localStorage.setItem('wardrobe', JSON.stringify(items));
+      render();
+      closeModal();
+    } else {
+      alert(data.error || 'Error saving item');
+    }
+  } catch(e){
+    alert('Error connecting to backend:\n'+e);
+  }
+}
+
+// -------------------- REMOVE ITEM --------------------
+async function removeItem(id){
+  if(!confirm('Are you sure you want to delete this item?')) return;
+
+  try {
+    const res = await fetch(`${API_BASE}/delete_dress/${id}`, {method:'DELETE'});
+    if(res.ok){
+      items = items.filter(i=>i.id!==id);
+      localStorage.setItem('wardrobe', JSON.stringify(items));
+      render();
+    } else {
+      alert('Error deleting item');
+    }
+  } catch(e){
+    alert('Error connecting to backend:\n'+e);
+  }
+}
+
+// -------------------- TOGGLE FAVORITE --------------------
+function toggleFav(id){
+  const item = items.find(i=>i.id===id);
+  if(!item) return;
+  item.fav = !item.fav;
+  localStorage.setItem('wardrobe', JSON.stringify(items));
+  render();
+}
+
+// -------------------- RENDER --------------------
+function render(){
+  const container = document.getElementById('items');
+  const empty = document.getElementById('empty');
+  const search = document.getElementById('search').value.toLowerCase();
+
+  let visible = items.filter(i => (filter==='All'||i.type===filter) && i.name.toLowerCase().includes(search));
+  container.innerHTML = '';
+  document.getElementById('count').textContent = `${items.length} Items in your wardrobe`;
+
+  if(!visible.length){ empty.style.display='block'; return; }
+  empty.style.display='none';
+
+  visible.forEach(item=>{
+    container.innerHTML += `
+      <div class="card">
+        <button onclick="removeItem(${item.id})">✕</button>
+        <img src="${item.image}">
+        <strong>${item.name}</strong>
+        <small>${item.type} • ${item.color}</small>
+        <small><strong>Preferred Weather:</strong> ${item.weather.length?item.weather.join(', '):'Not specified'}</small>
+        <span class="heart ${item.fav?'fav':''}" onclick="toggleFav(${item.id})">❤</span>
+      </div>
+    `;
+  });
+}
+
+// initial render
+render();
+</script>
+</body>
+</html>

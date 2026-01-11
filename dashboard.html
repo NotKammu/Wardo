@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wardo</title>
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body style="height: 3000px;">
+    <div class="bg">
+        <div data-us-project="jbNt73STrE3qktWMIJal"></div>
+    </div>
+
+    <div class="liquid-glass">
+        <div class="logo">WARDO</div>
+        <div class="header">
+            <a href="stylist.html"><button class="stylist">Stylist</button></a>
+            <a href="wardrobe.html"><button class="wardrobe">Wardrobe</button></a>
+            <button class="contact">Contact Us</button>
+            <div class="profile-pic">
+              <img src="styles/resources/3d_avatar_13.png" alt="profile" onclick="goProfile()">
+            </div>
+        </div>
+    </div>
+
+    <script>
+  function goProfile() {
+    window.location.replace("profile.html");
+  }
+</script>
+<div class="scene">
+    <div class="card-stack" id="stack">
+        <div class="card"><img src="styles/resources/IMG_4253.PNG" alt="Card 1"></div>
+        <div class="card"><img src="styles/resources/IMG_4252.PNG" alt="Card 2"></div>
+        <div class="card"><img src="styles/resources/IMG_4249.PNG" alt="Card 3"></div>
+        <div class="card"><img src="styles/resources/IMG_4248.PNG" alt="Card 4"></div>
+        <div class="card"><img src="styles/resources/IMG_4251.PNG" alt="Card 5"></div>
+        <div class="card"><img src="styles/resources/image-14488c38-d046-4326-86b7-0e7d60a1ce41.png" alt="Card 6"></div>
+    </div>
+
+    <script>
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    document.getElementById("stack").classList.add("fanned");
+  }, 1300);
+});
+
+// Smooth scroll to Contact/About
+document.querySelector('.contact').addEventListener('click', () => {
+  document.getElementById('contactAbout').scrollIntoView({ behavior: 'smooth' });
+});
+</script>
+
+<div id="contactAbout">
+    <h2>Contact & About Us</h2>
+    <p><strong>About Us:</strong> Wardo helps you manage your wardrobe and style effortlessly.</p>
+    <p><strong>Contact Us:</strong> Email: support@wardo.com | Phone: +91 1111111111</p>
+</div>
+</div>
+</body>
+</html>

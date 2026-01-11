@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wardo&#45;Create Account</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+Great+Primer+SC&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/signup.css" />
+</head>
+<body>
+  <div class="liquid-glass">
+    <div class="signup-yellow">
+      <p>CREATE ACCOUNT</p>
+    </div>
+    <div class="signup-white">
+      <p>Start your STYLE Journey</p>
+    </div>
+    <div class="field">
+      <label>Email</label>
+      <input type="email" id="email" placeholder="your@gmail.com" />
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="********" />
+    </div>
+    <div class="field">
+      <label>Confirm Password</label>
+      <input type="password" id="confirmPassword" placeholder="********" />
+    </div>
+    <button class="signup-btn" type="button" onclick="handleSignup()">Sign Up</button>
+    <p class="signup-text">
+      Have an account?
+      <a href="signin.html">Login</a>
+    </p>
+  </div>
+  <a href="index.html" class="back-home">← Back to Home</a>
+  <script>
+    function handleSignup() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+      if (email === "") {
+        alert("Email cannot be empty");
+        return;
+      }
+      if (password === "" || confirmPassword === "") {
+        alert("Password fields cannot be empty");
+        return;
+      }
+      if (password !== confirmPassword) {
+        alert("Passwords do not match");
+        return;
+      }
+      if (password.length < 8) {
+        alert("Password must be at least 8 characters long");
+        return;
+      }
+      window.location.replace("dashboard.html");
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+/* ===================== RESET ===================== */
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* ===================== FONT ===================== */
+@font-face {
+    font-family: kings_ransom;
+    src: url("/styles/resources/fonts/Kingv2l.ttf");
+}
+
+/* ===================== LOGO ===================== */
+.logo {
+    font-family: kings_ransom;
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+}
+
+/* ===================== BACKGROUND ===================== */
+.bg {
+    position: relative; /* needed for hero text */
+    background: url("resources/bg.png") bottom center / cover no-repeat fixed;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ===================== HERO TEXT ===================== */
+.hero-text {
+    position: absolute;
+    top: 180px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    max-width: 700px;
+    color: #e8e6dc;
+    z-index: 2;
+}
+
+.hero-text .eyebrow {
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #c9b87a;
+    margin-bottom: 14px;
+}
+
+.hero-text h1 {
+    font-family: "Georgia", serif;
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 1.25;
+    margin: 0 0 18px;
+}
+
+.hero-text h1 span {
+    color: #c9b87a;
+}
+
+.hero-text .subtitle {
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(232, 230, 220, 0.85);
+}
+
+/* ===================== CENTER IMAGE ===================== */
+.center-img {
+    position: absolute;
+    bottom: 250px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 90%;
+    height: auto;
+    z-index: 1;
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.9);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* ===================== HEADER ===================== */
+.header {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 12px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+/* ===================== GLASS NAVBAR ===================== */
+.liquid-glass {
+    width: 90%;
+    max-width: 1200px;
+    margin: 24px auto;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(22px);
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
+
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+/* ===================== NAV BUTTONS ===================== */
+.stylist-btn,
+.wardrobe-btn {
+    padding: 8px 16px;
+    background-color: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background 0.3s ease;
+}
+
+.stylist-btn:hover,
+.wardrobe-btn:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 768px) {
+    .hero-text {
+        top: 100px;
+        padding: 0 16px;
+    }
+
+    .hero-text h1 {
+        font-size: 36px;
+    }
+
+    .center-img {
+        max-width: 100%;
+    }
+}
+
+
+
+
