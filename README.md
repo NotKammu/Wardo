@@ -170,3 +170,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Made with ❤️ by the Wardo Team**
+ 
+## 📷 Screenshots
+
+Below are screenshots showing the app UI and an example error page captured during deployment testing.
+
+![Serverless Function Error](ss1.jpeg)
+
+![Personalization Form - Centered](ss2.jpeg)
+
+![Style Input Modal](ss3.jpeg)
