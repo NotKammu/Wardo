@@ -4,6 +4,7 @@ import numpy as np
 import sqlite3
 import hashlib
 import random
+import sys
 from flask import Flask, request, jsonify,render_template
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
@@ -12,7 +13,10 @@ from flask import send_from_directory
 
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///images.db"
+
+# Use /tmp for database on Vercel (ephemeral filesystem)
+db_path = os.environ.get('DB_PATH', '/tmp/project.db' if '/vercel' in os.getcwd() else 'project.db')
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
@@ -29,13 +33,8 @@ def allowed_file(filename):
 
 
 def get_db_connection():
-    conn = sqlite3.connect('project.db', check_same_thread=False)
-    conn.row_factory = sqlite3.Row
-    return conn
-
-
-def get_db_connection():
-    conn = sqlite3.connect('project.db', check_same_thread=False)
+    db_path = os.environ.get('DB_PATH', '/tmp/project.db' if '/vercel' in os.getcwd() else 'project.db')
+    conn = sqlite3.connect(db_path, check_same_thread=False)
     conn.row_factory = sqlite3.Row
     return conn
 

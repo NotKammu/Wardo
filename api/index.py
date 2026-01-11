@@ -6,6 +6,6 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from app import app
 
-# Export for Vercel
-def handler(request):
-    return app(request)
+# Export WSGI app for Vercel
+application = app
+
